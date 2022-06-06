@@ -8,7 +8,7 @@
 A library that uses Google Translate and [Ktor](https://github.com/ktorio/ktor) to translate text.
 
 The discovery of an unofficial API endpoint and correct parameters are not my findings, they are from [Py-Googletrans](https://github.com/ssut/py-googletrans), a great library with a similar goal, but for Python.
-##Why?
+## Why?
 Google Translate is one of the better translators out there, but their API is not free. This uses an unofficial API endpoint that does not require an API token.
 
 I was looking for a free Google Translate library for Kotlin, but all I found was [Py-Googletrans](https://github.com/ssut/py-googletrans). This is merely a simpler Py-Googletrans, but in Kotlin.
