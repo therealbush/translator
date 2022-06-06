@@ -18,10 +18,10 @@ dependencies {
 
     implementation(kotlin("stdlib-jdk8", "1.6.21"))
 
-    implementation("io.ktor:ktor-client-core:2.0.1")
-    implementation("io.ktor:ktor-client-cio:2.0.1")
+    api("io.ktor:ktor-client-core:2.0.1")
+    api("io.ktor:ktor-client-cio:2.0.1")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 }
 
 java {
