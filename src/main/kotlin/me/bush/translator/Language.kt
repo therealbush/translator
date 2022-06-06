@@ -118,7 +118,7 @@ enum class Language(val code: String) {
     ZULU("zu");
 
     init {
-        languageToEnum[this.name.lowercase()] = this
+        languageToEnum[name.lowercase()] = this
         codeToEnum[code] = this
     }
 

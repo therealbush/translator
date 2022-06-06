@@ -84,4 +84,4 @@ class Translation internal constructor(
 
 // Un-json our text
 private val JsonElement.string
-    get() = toString().removeSurrounding("\"").replace("\\n", "\n").let { if (it == "null") null else it }
+    get() = toString().removeSurrounding("\"").replace("\\n", "\n").takeIf { it != "null" }
