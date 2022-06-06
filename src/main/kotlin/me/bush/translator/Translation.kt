@@ -5,43 +5,84 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonArray
+import java.util.*
+import java.util.Objects.hash
 
 /**
+ * A class containing the results of a translation request.
+ *
  * @author bush
- * @since 5/27/2022
+ * @since 1.0.0
  */
 class Translation internal constructor(
-    val target: Language,
+
+    /**
+     * The language translated to.
+     */
+    val targetLanguage: Language,
+
+    /**
+     * The original, untranslated text.
+     */
+    val sourceText: String,
+
+    /**
+     * The raw data received from Google's API.
+     */
     val rawData: String,
+
+    /**
+     * The url that the translation request was made to.
+     */
     val url: Url
 ) {
+    /**
+     * The data received from Google's API, as a [JsonArray].
+     */
     val jsonData = Json.parseToJsonElement(rawData).jsonArray
-    val translatedText = getTranslatedText(jsonData)
-    val sourceText = getSourceText(jsonData)
-    val pronunciation = getPronunciation(jsonData)
-    val source = languageOf(jsonData[2].string!!)
+
+    /**
+     * The pronunciation of the translated text. This is generally
+     * null when the target language uses the Roman/Latin Alphabet.
+     */
+    val pronunciation = jsonData[0].jsonArray.last().jsonArray[2].string
+
+    /**
+     * The language of the translated text. This is useful
+     * if the source language was set to [Language.AUTO].
+     */
+    val sourceLanguage = languageOf(jsonData[2].string!!)
+
+    /**
+     * The result of the translation.
+     */
+    val translatedText = buildString {
+        // For some reason every sentence/line is separated, so we need to join them back.
+        jsonData[0].jsonArray.mapNotNull { it.jsonArray[0].string }.forEach(::append)
+    }
+
+    override fun equals(other: Any?) = when {
+        other === this -> true
+        other !is Translation -> false
+        other.hashCode() == hashCode() -> true
+        else -> false
+    }
+
+    override fun hashCode() = hash(
+        targetLanguage,
+        sourceLanguage,
+        translatedText,
+        pronunciation,
+        sourceText,
+        jsonData,
+        rawData,
+        url
+    )
+
+    override fun toString() =
+        "Translation($sourceLanguage -> $targetLanguage, $sourceText -> $translatedText)"
 }
 
-private fun getTranslatedText(data: JsonArray) = StringBuffer().apply {
-    data[0].jsonArray.forEach {
-        it.jsonArray[0].string?.let(::append)
-    }
-}.toString()
-
-private fun getSourceText(data: JsonArray) = StringBuffer().apply {
-    var first = true
-    data[0].jsonArray.forEach {
-        it.jsonArray[1].string?.let { string ->
-            // For some reason only the source text
-            // strings have trailing spaces removed
-            if (!first) append(" ")
-            append(string)
-            first = false
-        }
-    }
-}.toString()
-
-private fun getPronunciation(data: JsonArray) = data[0].jsonArray.last().jsonArray[2].string
-
+// Un-json our text
 private val JsonElement.string
-    get() = toString().removeSurrounding("\"").let { if (it == "null") null else it }
+    get() = toString().removeSurrounding("\"").replace("\\n", "\n").let { if (it == "null") null else it }

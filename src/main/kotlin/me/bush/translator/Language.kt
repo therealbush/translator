@@ -1,8 +1,10 @@
 package me.bush.translator
 
 /**
+ * All languages recognized by Google Translate.
+ *
  * @author bush
- * @since 6/4/2022
+ * @since 1.0.0
  */
 enum class Language(val code: String) {
     AUTO("auto"),
@@ -126,8 +128,18 @@ enum class Language(val code: String) {
 private val languageToEnum = mutableMapOf<String, Language>()
 private val codeToEnum = mutableMapOf<String, Language>()
 
+/**
+ * Attempts to resolve a [Language] from the input string.
+ *
+ * Valid inputs include "en", "haw", "spanish", "CHINESE_TRA"
+ *
+ * @param language A language name, code, or part of a
+ *                 language name. Case-insensitive.
+ *
+ * @throws NoSuchElementException If [language] is not a valid language
+ *                                name, code, or part of a language name.
+ */
 fun languageOf(language: String) =
     codeToEnum[language] ?: // If language is a code
     languageToEnum[language.lowercase()] ?: // If language is a string
-    languageToEnum[languageToEnum.keys.first { language in it }]!! // Check for contains, or throw NPE
-
+    languageToEnum[languageToEnum.keys.first { language in it }]!! // Check for contains or throw

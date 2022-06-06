@@ -9,10 +9,15 @@ import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 
 /**
- * @author bush, googletrans-py + contributors
- * @since 5/26/2022
+ * [A translator that uses Google's translate API.](https://github.com/therealbush/translator)
+ *
+ * @author bush, py-googletrans + contributors
+ * @since 1.0.0
+ *
+ * @property client The HTTP client to use for requests to Google's API.
+ *                  This should be kept as default unless you know what you are doing.
  */
-class Translator {
+class Translator(
     private val client: HttpClient = HttpClient(CIO) {
         install(UserAgent) {
             agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
@@ -32,12 +37,35 @@ class Translator {
             }
         }
     }
+) {
 
+    /**
+     * Translates the given string to the desired language.
+     * ```
+     * translate("Text to be translated", Language.RUSSIAN)
+     * translate("Text to be translated", ALBANIAN, ENGLISH)
+     * ```
+     * @param text   The text to be translated.
+     * @param target The language to translate [text] to.
+     * @param source The language of [text]. By default, this is [Language.AUTO].
+     *
+     * @return A [Translation] containing the translated text and other related data.
+     * @throws TranslationException If the HTTP request could not be completed.
+     *
+     * @see translateCatching
+     * @see translateBlocking
+     * @see translateBlockingCatching
+     *
+     * @see Translation
+     */
     suspend fun translate(
         text: String,
-        target: Language = Language.ENGLISH,
+        target: Language,
         source: Language = Language.AUTO
     ): Translation {
+        require(target != Language.AUTO) {
+            "The target language cannot be Language.AUTO!"
+        }
         val response = client.get("https://translate.googleapis.com/translate_a/single") {
             constantParameters()
             parameter("sl", source.code)
@@ -45,34 +73,95 @@ class Translator {
             parameter("hl", target.code)
             parameter("q", text)
         }
-        return Translation(target, response.bodyAsText(), response.request.url)
+        return Translation(target, text, response.bodyAsText(), response.request.url)
     }
 
+    /**
+     * Translates the given string to the desired language,
+     * and returns a [Result] containing the [Translation].
+     * ```
+     * translateCatching("Text to be translated", Language.RUSSIAN)
+     * translateCatching("Text to be translated", ALBANIAN, ENGLISH)
+     * ```
+     * @param text   The text to be translated.
+     * @param target The language to translate [text] to.
+     * @param source The language of [text]. By default, this is [Language.AUTO].
+     *
+     * @return A [Result] containing the [Translation], or a [TranslationException]
+     *         If the HTTP request could not be completed.
+     *
+     * @see translate
+     * @see translateBlocking
+     * @see translateBlockingCatching
+     *
+     * @see Translation
+     */
     suspend fun translateCatching(
         text: String,
-        target: Language = Language.ENGLISH,
+        target: Language,
         source: Language = Language.AUTO
     ): Result<Translation> = runCatching { translate(text, target, source) }
 
+    /**
+     * Translates the given string to the desired language,
+     * blocking the current thread until completion.
+     * ```
+     * translateBlocking("Text to be translated", Language.RUSSIAN)
+     * translateBlocking("Text to be translated", ALBANIAN, ENGLISH)
+     * ```
+     * @param text   The text to be translated.
+     * @param target The language to translate [text] to.
+     * @param source The language of [text]. By default, this is [Language.AUTO].
+     *
+     * @return A [Translation] containing the translated text and other related data.
+     * @throws TranslationException If the HTTP request could not be completed.
+     *
+     * @see translate
+     * @see translateCatching
+     * @see translateBlockingCatching
+     */
     @JvmOverloads
     fun translateBlocking(
         text: String,
-        target: Language = Language.ENGLISH,
+        target: Language,
         source: Language = Language.AUTO
     ): Translation = runBlocking { translate(text, target, source) }
 
+    /**
+     * Translates the given string to the desired language,
+     * blocking the current thread until completion and
+     * returning a [Result] containing the [Translation].
+     * ```
+     * translateBlockingCatching("Text to be translated", Language.RUSSIAN)
+     * translateBlockingCatching("Text to be translated", ALBANIAN, ENGLISH)
+     * ```
+     * @param text   The text to be translated.
+     * @param target The language to translate [text] to.
+     * @param source The language of [text]. By default, this is [Language.AUTO].
+     *
+     * @return A [Result] containing the [Translation], or a [TranslationException]
+     *         If the HTTP request could not be completed.
+     *
+     * @see translate
+     * @see translateCatching
+     * @see translateBlocking
+     *
+     * @see Translation
+     */
     fun translateBlockingCatching(
         text: String,
-        target: Language = Language.ENGLISH,
+        target: Language,
         source: Language = Language.AUTO
     ): Result<Translation> = runBlocking { translateCatching(text, target, source) }
 }
 
-private val DT_PARAMS = arrayOf("at", "bd", "ex", "ld", "md", "qca", "rw", "rm", "ss", "t")
+// I didn't find these myself, check out https://github.com/ssut/py-googletrans
+private val dtParams = arrayOf("at", "bd", "ex", "ld", "md", "qca", "rw", "rm", "ss", "t")
 
+// ^^^
 private fun HttpRequestBuilder.constantParameters() {
     parameter("client", "gtx")
-    DT_PARAMS.forEach { parameter("dt", it) }
+    dtParams.forEach { parameter("dt", it) }
     parameter("ie", "UTF-8")
     parameter("oe", "UTF-8")
     parameter("otf", 1)
@@ -81,4 +170,7 @@ private fun HttpRequestBuilder.constantParameters() {
     parameter("tk", "bushissocool")
 }
 
-class TranslationException(message: String, cause: Throwable? = null) : Exception(message, cause)
+/**
+ * Indicates an exception/error relating to the translation's HTTP request.
+ */
+private class TranslationException(message: String, cause: Throwable? = null) : Exception(message, cause)

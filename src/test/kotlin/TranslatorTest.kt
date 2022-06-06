@@ -11,7 +11,7 @@ class TranslatorTest {
     @Test
     fun test() {
         val translator = Translator()
-        val translation = translator.translateBlocking( // todo: unescape newlines or deal with them somehow
+        val translation = translator.translateBlocking(
             """
                 Yeezy season approaching
                 Fuck whatever y'all been hearing
@@ -50,14 +50,14 @@ class TranslatorTest {
                 Right now, I need, I need right now
                 Right now, I need, I need right now
             """.trimIndent(),
-            target = Language.BOSNIAN,
+            target = Language.ALBANIAN,
             source = Language.AUTO
         )
         println(translation.url)
         println(translation.translatedText)
         println(translation.sourceText)
-        println(translation.target)
-        println(translation.source)
+        println(translation.targetLanguage)
+        println(translation.sourceLanguage)
         println(translation.pronunciation)
     }
 }
