@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     `java-library`
     `maven-publish`
+    `kotlin-dsl`
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.serialization") version "1.6.21"
     id("org.jetbrains.dokka") version "1.6.21"
@@ -11,7 +12,9 @@ plugins {
 group = "me.bush"
 version = "1.0.0"
 
-repositories.mavenCentral()
+repositories {
+    mavenCentral()
+}
 
 dependencies {
     testImplementation(kotlin("test"))
@@ -42,4 +45,10 @@ tasks {
     }
 }
 
-publishing.publications.create<MavenPublication>("maven").from(components["java"])
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+        }
+    }
+}
