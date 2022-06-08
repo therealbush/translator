@@ -1,3 +1,5 @@
+note: currently dealing with a problem thats causing api dependencies (ktor) to not be on the compile classpath, will fix soon.
+
 # TRANSLATOR
 
 <img src="https://tokei.rs/b1/github/therealbush/translator" alt="lines of code"/> <img src="https://img.shields.io/github/languages/code-size/therealbush/translator" alt="code size"/> [![](https://jitpack.io/v/therealbush/translator.svg)](https://jitpack.io/#therealbush/translator) [![](https://jitpack.io/v/therealbush/translator/month.svg)](https://jitpack.io/#therealbush/translator)<br> 
