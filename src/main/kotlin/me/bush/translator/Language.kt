@@ -142,5 +142,5 @@ fun languageOf(language: String) = language.lowercase().let { lang ->
     Language.AUTO // Ensure enums are loaded
     codeToEnum[lang] ?: // If language is a code
     languageToEnum[lang] ?: // If language is a string
-    languageToEnum[languageToEnum.keys.firstOrNull { language in it }] // Check for contains
+    languageToEnum[languageToEnum.keys.firstOrNull { lang in it }] // Check for contains
 }
