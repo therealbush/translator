@@ -138,7 +138,9 @@ private val codeToEnum = mutableMapOf<String, Language>()
  *
  * @return The corresponding [Language], or `null` if the input is invalid.
  */
-fun languageOf(language: String) =
-    codeToEnum[language] ?: // If language is a code
-    languageToEnum[language.lowercase()] ?: // If language is a string
+fun languageOf(language: String) = language.lowercase().let { lang ->
+    Language.AUTO // Ensure enums are loaded
+    codeToEnum[lang] ?: // If language is a code
+    languageToEnum[lang] ?: // If language is a string
     languageToEnum[languageToEnum.keys.firstOrNull { language in it }] // Check for contains
+}
