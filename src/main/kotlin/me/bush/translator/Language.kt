@@ -136,10 +136,9 @@ private val codeToEnum = mutableMapOf<String, Language>()
  * @param language A language name, code, or part of a
  *                 language name. Case-insensitive.
  *
- * @throws NoSuchElementException If [language] is not a valid language
- *                                name, code, or part of a language name.
+ * @return The corresponding [Language], or `null` if the input is invalid.
  */
 fun languageOf(language: String) =
     codeToEnum[language] ?: // If language is a code
     languageToEnum[language.lowercase()] ?: // If language is a string
-    languageToEnum[languageToEnum.keys.first { language in it }]!! // Check for contains or throw
+    languageToEnum[languageToEnum.keys.firstOrNull { language in it }] // Check for contains
