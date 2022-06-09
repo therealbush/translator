@@ -173,4 +173,4 @@ private fun HttpRequestBuilder.constantParameters() {
 /**
  * Indicates an exception/error relating to the translation's HTTP request.
  */
-private class TranslationException(message: String, cause: Throwable? = null) : Exception(message, cause)
+class TranslationException(message: String, cause: Throwable? = null) : Exception(message, cause)
