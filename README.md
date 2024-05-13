@@ -21,7 +21,7 @@ repositories {
 ```
 ```groovy
 dependencies {
-    implementation 'com.github.therealbush:translator:1.0.2'
+    implementation 'com.github.therealbush:translator:1.1.0'
 }
 ```
 ### Usage
@@ -44,7 +44,7 @@ Language.ENGLISH == Language("english") == Language("en") == Language("eng")
 ### Java interoperability
 ```java
 Translator translator = new Translator();
-Translation translation = translator.translateBlocking("...", Language.SPANISH);
+Translation translation = translator.translateBlocking("...", Language.Companion.invoke("spanish"));
 translation.getTranslatedText();
 ```
 Only `translateBlocking(...)` should be called from Java code. The other methods use Kotlin specific language features.
