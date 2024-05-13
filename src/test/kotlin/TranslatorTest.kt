@@ -13,44 +13,16 @@ class TranslatorTest {
         val translator = Translator()
         val translation = translator.translateBlocking(
             """
-                Yeezy season approaching
-                Fuck whatever y'all been hearing
-                Fuck what, fuck whatever y'all been wearing
-                A monster about to come alive again
-                Soon as I pull up and park the Benz
-                We get this bitch shaking like Parkinsons
-                Take my number and lock it in
-                Indian hair, no moccasins
-                It's too many hoes in this house of sin
-                Real nigga back in the house again
-                Black Timbs all on your couch again
-                Black dick all in your spouse again
-                And I know she like chocolate men
-                She got more niggas off than Cochran, huh?
-                On sight, on sight
-                How much do I not give a fuck?
-                Let me show you right now before you give it up
-                How much do I not give a fuck?
-                Let me show you right now before you give it up
-                He'll give us what we need
-                It may not be what we want
-                Baby girl tryna get a nut
-                And her girl tryna give it up
-                Chopped em both down
-                Don't judge 'em, Joe Brown
-                One last announcement
-                No sports bra, let's keep it bouncing
-                Everybody wanna live at the top of the mountain
-                Took her to the 'Bleau, she tried to sip the fountain
-                That when David Grutman kicked her out
-                But I got her back in and put my dick in her mouth
-                On sight, on sight
-                Uh-huh
-                Right now, I need right now
-                Right now, I need, I need right now
-                Right now, I need, I need right now
+                I go through my day pretty normal, like I'm a normal guy, I'm a swell guy, I'm a nice enough guy, I'm a 
+                cool kinda guy. Heh. I'm a pretty groovy guy… But then I get a little SUGAR in me, and I start to go 
+                CUCKOO! Doesn't have to be much, this time around it was two 'em–two of Fiber One® Brownies, only 90 
+                calories each but they do the job! Do you know what I'm sayin'? They get me goin', they get me riled up!
+                A little CUCKOO, a little WACKY! Start gettin' me a little KOOKY, a little–you know–LOOPY!! Ooh-ooh! 
+                Hey! Somebody t–somebody put this kid in a padded cell, get 'im a straitjacket, he's goin' a lil… wacky…
+                Goin' a lil KOOKY… He's off the walls! Bananas! Loco! You want me to stop. Isn't that wonderful. Well 
+                lemme just do whatever you say, because it's your little fairy tale.
             """.trimIndent(),
-            target = Language.ALBANIAN,
+            target = Language.values().filter { it != Language.ENGLISH }.random(),
             source = Language.AUTO
         )
         println(translation.url)

@@ -117,30 +117,38 @@ enum class Language(val code: String) {
     YORUBA("yo"),
     ZULU("zu");
 
-    init {
-        languageToEnum[name.lowercase()] = this
-        codeToEnum[code] = this
+    companion object {
+        private val languageToEnum = mutableMapOf<String, Language>()
+        private val codeToEnum = mutableMapOf<String, Language>()
+
+        init {
+            Language.values().forEach { language ->
+                languageToEnum[language.name.lowercase()] = language
+                codeToEnum[language.code] = language
+            }
+        }
+
+        /**
+         * Attempts to resolve a [Language] from the input string.
+         *
+         * Valid inputs include "en", "haw", "spanish", "CHINESE_TRA"
+         *
+         * @param language A language name, code, or part of a language name. Case-insensitive.
+         * @param strict   If enabled, partial language names or codes will not be allowed. `null` will
+         *                 be returned if `language` is not an exact match to any language code or name.
+         *
+         * @return The corresponding [Language], or `null` if the input is invalid.
+         */
+        operator fun invoke(language: String, strict: Boolean = false) = language.lowercase().let { lang ->
+            codeToEnum[lang] ?: // If input is a lang code
+            languageToEnum[lang] ?: // If input is a name
+
+            if (strict) null else {
+                languageToEnum[languageToEnum.keys.firstOrNull { language in it }] ?: // Check if name contains input
+                codeToEnum[codeToEnum.keys.firstOrNull { language in it }] // Check if lang code contains input
+            }
+        }
     }
 
     override fun toString() = name.lowercase().replaceFirstChar { it.uppercase() }
-}
-
-private val languageToEnum = mutableMapOf<String, Language>()
-private val codeToEnum = mutableMapOf<String, Language>()
-
-/**
- * Attempts to resolve a [Language] from the input string.
- *
- * Valid inputs include "en", "haw", "spanish", "CHINESE_TRA"
- *
- * @param language A language name, code, or part of a
- *                 language name. Case-insensitive.
- *
- * @return The corresponding [Language], or `null` if the input is invalid.
- */
-fun languageOf(language: String) = language.lowercase().let { lang ->
-    Language.AUTO // Ensure enums are loaded
-    codeToEnum[lang] ?: // If language is a code
-    languageToEnum[lang] ?: // If language is a string
-    languageToEnum[languageToEnum.keys.firstOrNull { language in it }] // Check for contains
 }

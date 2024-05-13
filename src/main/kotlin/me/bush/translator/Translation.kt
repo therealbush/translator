@@ -50,7 +50,7 @@ class Translation internal constructor(
      * The language of the translated text. This is useful
      * if the source language was set to [Language.AUTO].
      */
-    val sourceLanguage = languageOf(jsonData[2].string!!)!!
+    val sourceLanguage = Language(jsonData[2].string!!)!!
 
     /**
      * The result of the translation.

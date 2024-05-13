@@ -1,6 +1,6 @@
 # TRANSLATOR
 
-<img src="https://tokei.rs/b1/github/therealbush/translator" alt="lines of code"/> <img src="https://img.shields.io/github/languages/code-size/therealbush/translator" alt="code size"/> [![](https://jitpack.io/v/therealbush/translator.svg)](https://jitpack.io/#therealbush/translator) [![](https://jitpack.io/v/therealbush/translator/month.svg)](https://jitpack.io/#therealbush/translator)<br> 
+<img src="https://sloc.xyz/github/therealbush/translator" alt="lines of code"/> <img src="https://img.shields.io/github/languages/code-size/therealbush/translator" alt="code size"/> [![](https://jitpack.io/v/therealbush/translator.svg)](https://jitpack.io/#therealbush/translator) [![](https://jitpack.io/v/therealbush/translator/month.svg)](https://jitpack.io/#therealbush/translator)<br> 
 
 *A simple and free Google Translate library for Kotlin/JVM and Java.*
 
@@ -35,6 +35,12 @@ println(translation.sourceLanguage) // English
 - If you are calling from a non `suspend` function, you can use `translateBlocking(...)`
 - If you want to receive a `Result<Translation>`, you can use `translateCatching(...)`
 - If you want to configure your own `HttpClient`, you can pass it to `Translator(client)`
+
+
+- Operator function `Language.invoke()` can be used to resolve a `Language` enum from a language name, code, or partial name or code:
+```kotlin
+Language.ENGLISH == Language("english") == Language("en") == Language("eng")
+```
 ### Java interoperability
 ```java
 Translator translator = new Translator();

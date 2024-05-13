@@ -1,29 +1,27 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     `java-library`
     `maven-publish`
-    kotlin("jvm") version "1.6.21"
-    kotlin("plugin.serialization") version "1.6.21"
-    id("org.jetbrains.dokka") version "1.6.21"
+    kotlin("jvm") version "1.9.24"
+    kotlin("plugin.serialization") version "1.9.22"
+    id("org.jetbrains.dokka") version "1.9.20"
 }
 
 group = "me.bush"
-version = "1.0.1"
+version = "1.1.0"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
+    testImplementation(kotlin("test", "1.9.24"))
 
-    implementation(kotlin("stdlib-jdk8", "1.6.21"))
+    implementation(kotlin("stdlib-jdk8", "1.9.24"))
 
-    api("io.ktor:ktor-client-core:2.0.1")
-    api("io.ktor:ktor-client-cio:2.0.1")
+    api("io.ktor:ktor-client-core:2.3.11")
+    api("io.ktor:ktor-client-cio:2.3.11")
 
-    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 }
 
 java {
@@ -35,9 +33,6 @@ tasks {
     test {
         testLogging.showStandardStreams = true
         useJUnitPlatform()
-    }
-    withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
     }
     named<Jar>("javadocJar") {
         from(named("dokkaJavadoc"))
