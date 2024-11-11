@@ -47,6 +47,19 @@ class Translation internal constructor(
     val pronunciation = jsonData[0].jsonArray.last().jsonArray[2].string
 
     /**
+     * The pronunciation of the source text. This is generally
+     * null when the source language uses the Roman/Latin Alphabet.
+     */
+    val pronunciationSource = run {
+        val jsonArray = jsonData[0].jsonArray.last().jsonArray
+        if (jsonArray.size > 3) {
+            jsonArray[3].string
+        } else {
+            null
+        }
+    }
+
+    /**
      * The language of the translated text. This is useful
      * if the source language was set to [Language.AUTO].
      */
