@@ -22,7 +22,7 @@ class TranslatorTest {
                 Goin' a lil KOOKY… He's off the walls! Bananas! Loco! You want me to stop. Isn't that wonderful. Well 
                 lemme just do whatever you say, because it's your little fairy tale.
             """.trimIndent(),
-            target = Language.values().filter { it != Language.ENGLISH }.random(),
+            target = Language.entries.filter { it != Language.ENGLISH && it != Language.AUTO }.random(),
             source = Language.AUTO
         )
         println(translation.url)
@@ -31,5 +31,6 @@ class TranslatorTest {
         println(translation.targetLanguage)
         println(translation.sourceLanguage)
         println(translation.pronunciation)
+        println(translation.pronunciationSource)
     }
 }
