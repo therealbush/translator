@@ -21,7 +21,7 @@ repositories {
 ```
 ```groovy
 dependencies {
-    implementation 'com.github.therealbush:translator:1.1.0'
+    implementation 'com.github.therealbush:translator:1.1.1'
 }
 ```
 ### Usage
