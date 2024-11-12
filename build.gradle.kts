@@ -1,27 +1,27 @@
 plugins {
     `java-library`
     `maven-publish`
-    kotlin("jvm") version "1.9.24"
-    kotlin("plugin.serialization") version "1.9.22"
+    kotlin("jvm") version "2.0.21"
+    kotlin("plugin.serialization") version "2.0.21"
     id("org.jetbrains.dokka") version "1.9.20"
 }
 
 group = "me.bush"
-version = "1.1.0"
+version = "1.1.1"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation(kotlin("test", "1.9.24"))
+    testImplementation(kotlin("test", "2.0.21"))
 
-    implementation(kotlin("stdlib-jdk8", "1.9.24"))
+    implementation(kotlin("stdlib-jdk8", "2.0.21"))
 
-    api("io.ktor:ktor-client-core:2.3.11")
-    api("io.ktor:ktor-client-cio:2.3.11")
+    api("io.ktor:ktor-client-core:3.0.1")
+    api("io.ktor:ktor-client-cio:3.0.1")
 
-    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 }
 
 java {

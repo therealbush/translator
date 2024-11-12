@@ -10,7 +10,7 @@ import java.util.Objects.hash
 /**
  * A class containing the results of a translation request.
  *
- * @author bush
+ * @author bush, twistios
  * @since 1.0.0
  */
 class Translation internal constructor(
@@ -44,13 +44,20 @@ class Translation internal constructor(
      * The pronunciation of the translated text. This is generally
      * null when the target language uses the Roman/Latin Alphabet.
      */
-    val pronunciation = jsonData[0].jsonArray.last().jsonArray[2].string
+    val translatedPronunciation = jsonData[0].jsonArray.last().jsonArray[2].string
+
+    /**
+     * The pronunciation of the translated text. This is generally
+     * null when the target language uses the Roman/Latin Alphabet.
+     */
+    @Deprecated("Replaced by translatedPronunciation")
+    val pronunciation = translatedPronunciation
 
     /**
      * The pronunciation of the source text. This is generally
      * null when the source language uses the Roman/Latin Alphabet.
      */
-    val pronunciationSource = run {
+    val sourcePronunciation = run {
         val jsonArray = jsonData[0].jsonArray.last().jsonArray
         if (jsonArray.size > 3) {
             jsonArray[3].string
@@ -63,7 +70,7 @@ class Translation internal constructor(
      * The language of the translated text. This is useful
      * if the source language was set to [Language.AUTO].
      */
-    val sourceLanguage = Language(jsonData[2].string!!)!!
+    val sourceLanguage = Language(jsonData[2].string!!)
 
     /**
      * The result of the translation.
@@ -84,7 +91,7 @@ class Translation internal constructor(
         targetLanguage,
         sourceLanguage,
         translatedText,
-        pronunciation,
+        translatedPronunciation,
         sourceText,
         jsonData,
         rawData,

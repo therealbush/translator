@@ -117,12 +117,14 @@ enum class Language(val code: String) {
     YORUBA("yo"),
     ZULU("zu");
 
+    val formattedName = name.lowercase().replaceFirstChar { it.uppercase() }.replace('_', ' ')
+
     companion object {
         private val languageToEnum = mutableMapOf<String, Language>()
         private val codeToEnum = mutableMapOf<String, Language>()
 
         init {
-            Language.values().forEach { language ->
+            entries.forEach { language ->
                 languageToEnum[language.name.lowercase()] = language
                 codeToEnum[language.code] = language
             }
@@ -143,12 +145,12 @@ enum class Language(val code: String) {
             codeToEnum[lang] ?: // If input is a lang code
             languageToEnum[lang] ?: // If input is a name
 
-            if (strict) null else {
+            if (strict) throw IllegalArgumentException("language parameter is not a valid language or code") else {
                 languageToEnum[languageToEnum.keys.firstOrNull { language in it }] ?: // Check if name contains input
-                codeToEnum[codeToEnum.keys.firstOrNull { language in it }] // Check if lang code contains input
+                codeToEnum[codeToEnum.keys.firstOrNull { language in it }]!! // Check if lang code contains input
             }
         }
     }
 
-    override fun toString() = name.lowercase().replaceFirstChar { it.uppercase() }
+    override fun toString() = formattedName
 }

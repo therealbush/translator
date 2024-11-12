@@ -3,7 +3,7 @@ package me.bush.translator
 import org.junit.jupiter.api.Test
 
 /**
- * @author bush
+ * @author bush, twistios
  * @since 6/1/2022
  */
 class TranslatorTest {
@@ -30,7 +30,8 @@ class TranslatorTest {
         println(translation.sourceText)
         println(translation.targetLanguage)
         println(translation.sourceLanguage)
-        println(translation.pronunciation)
-        println(translation.pronunciationSource)
+        println(translation.translatedPronunciation)
+        println(translation.sourcePronunciation)
+        println(translation.rawData)
     }
 }
